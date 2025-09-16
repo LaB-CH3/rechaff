@@ -23,11 +23,13 @@ const supabase = createClient('https://xyzcompany.supabase.co', 'publishable-or-
 
 
 ## 2. Install Rechaff
-First, install and import ReChaff and pass in your Supabase client instance:
+Install Rechaff via npm:
 
 ```bash
 npm install rechaff
 ```
+
+Then import and initialize it by passing your Supabase client instance:
 
 ```js
 import { createAuthComponents } from 'rechaff';

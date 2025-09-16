@@ -1,6 +1,6 @@
 {
   "name": "rechaff",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Drop-in Auth SDK for Supabase",
    "repository": {
     "type": "git",
