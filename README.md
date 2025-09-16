@@ -22,11 +22,15 @@ const supabase = createClient('https://xyzcompany.supabase.co', 'publishable-or-
 <br><br>
 
 
-## 2. Import Rechaff
-First, import ReChaff and pass in your Supabase client instance::
+## 2. Install Rechaff
+First, install and import ReChaff and pass in your Supabase client instance:
+
+```bash
+npm install rechaff
+```
 
 ```js
-import { createAuthComponents } from "https://cdn.jsdelivr.net/gh/LaB-CH3/rechaff@v1.0.0/dist/Auth.js";
+import { createAuthComponents } from 'rechaff';
 
 // Initialize the sign-in and sign-up components with your Supabase client
 const { SignIn, SignUp } = createAuthComponents(supabase);
