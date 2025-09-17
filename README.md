@@ -42,7 +42,7 @@ const { SignIn, SignUp } = createAuthComponents(supabase);
 
 ### Option B — Import directly from CDN
 ```js
-import { createAuthComponents } from "https://cdn.jsdelivr.net/gh/LaB-CH3/rechaff@v1.0.0/dist/Auth.js";
+import { createAuthComponents } from "https://cdn.jsdelivr.net/gh/LaB-CH3/rechaff@refs/heads/main/dist/Auth.js";
 
 // Initialize auth components
 const { SignIn, SignUp } = createAuthComponents(supabase);
