@@ -16,7 +16,6 @@
     "build": "vite build",
     "dev": "vite"
   },
-  "type": "module",
   "homepage": "https://github.com/LaB-CH3/rechaff#readme",
   "keywords": [
     "supabase",
