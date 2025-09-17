@@ -2,19 +2,30 @@
   "name": "rechaff",
   "version": "1.1.0",
   "description": "Drop-in Auth SDK for Supabase",
-   "repository": {
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/LaB-CH3/rechaff.git"
   },
   "main": "dist/Auth.js",
-  "files": ["dist"],
+  "types": "types/index.d.ts",
+  "files": [
+    "dist",
+    "types"
+  ],
   "scripts": {
     "build": "vite build",
     "dev": "vite"
   },
+  "type": "module",
   "homepage": "https://github.com/LaB-CH3/rechaff#readme",
-  "keywords": ["supabase", "auth", "sdk"],
+  "keywords": [
+    "supabase",
+    "auth",
+    "sdk"
+  ],
   "author": "Anthony Charles",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^7.1.5"
+  }
 }
-

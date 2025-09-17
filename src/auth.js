@@ -26,7 +26,7 @@ class BaseAuth extends HTMLElement {
 
         .sdk-input {
           width: 100%;
-          padding: 0.5rem 1rem;
+          padding: 0.5rem .9rem;
           border: 1px solid #e5e7eb;
           border-radius: 0.5rem;
           background-color: #ffffff;
@@ -119,6 +119,12 @@ class BaseAuth extends HTMLElement {
         .sdk-header img {
           margin: 5px auto;
         }
+
+        .sdk-password-label{
+           display: flex;
+           justify-content: space-between;
+        }
+      
       </style>
     `;
   }
@@ -142,7 +148,7 @@ class BaseAuth extends HTMLElement {
       <div class="sdk-header">
         ${assets?.logoImageUrl 
           ? `<a href="${assets?.logoLinkUrl || "#"}"><img src="${assets?.logoImageUrl}" height="40"/></a>` 
-          : `<i class="ri-bluesky-fill text-4xl"></i>`}
+          : ``}
         <h1>${assets?.title || ''}</h1>
         <p>${assets?.subtitle || ''}</p>
       </div>
@@ -162,42 +168,45 @@ class BaseAuth extends HTMLElement {
     `;
   }
 
-  renderDivider(label = "or continue with") {
+  renderDivider(providers) {
+    if(!providers || providers?.length == 0) return ''
     return `
      <div class="sdk-divider">
-      <span></span>  <span>${label}</span> <span></span>
+      <span></span>  <span>or continue with</span> <span></span>
      </div>
     `;
   }
 
 
   renderAuthForm(authType){
-     const { elements = {}, layout = {} } = this._config;
+     const { elements = {}, layout = {}, assets = {} } = this._config;
      const socialPlacement = layout.socialButtonsPlacement || "bottom";
      const socialVariant = layout.socialButtonsVariant || "blockButton";
+     const providers = this._config.providers || [];
+
 
      return `
-     ${socialPlacement === "top" ? `${this.renderOAuthButtons(socialVariant, elements)} ${this.renderDivider()}` : ""}
+     ${socialPlacement === "top" ? `${this.renderOAuthButtons(socialVariant, elements)} ${this.renderDivider(providers)}` : ""}
       <form id="sdk-form" class="sdk-form">
          ${authType == 'up' ? `
           <div>
-            <label>Full name</label>
-            <input class="sdk-input ${elements.formInputs || ''}" type="text" name="name" placeholder="Jackie Robinson" required />
+            <label for="sdk-form-name">Full name</label>
+            <input id="sdk-form-name" class="sdk-input ${elements.formInputs || ''}" type="text" name="name" autocomplete="given-name" placeholder="Jackie Robinson" required />
           </div>
           ` : '' }
         <div>
-          <label>Email address</label>
-          <input class="sdk-input ${elements.formInputs || ''}" type="email" name="email" placeholder="name@company.com" required />
+          <label for="sdk-form-email">Email address</label>
+          <input id="sdk-form-email" class="sdk-input ${elements.formInputs || ''}" type="email" name="email" autocomplete="off" placeholder="email@address.com" required />
         </div>
         <div>
-          <label>Password</label>
-          <input class="sdk-input ${elements.formInputs || ''}" type="password" name="password" placeholder="Min 6 characters, make it strong" required />
+          <label for="sdk-form-password">Password</label>
+          <input id="sdk-form-password" class="sdk-input ${elements.formInputs || ''}" type="password" name="password" placeholder="Enter your password" required />
           <div class="sdk-error"></div>
         </div>
 
         <button class="sdk-button ${elements.formButtonPrimary || ''}" type="submit">Sign ${authType}</button>
       </form>
-      ${socialPlacement === "bottom" ? `${this.renderDivider()} ${this.renderOAuthButtons(socialVariant, elements)}` : ""}
+      ${socialPlacement === "bottom" ? `${this.renderDivider(providers)} ${this.renderOAuthButtons(socialVariant, elements)}` : ""}
      `
   }
 

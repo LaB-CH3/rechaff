@@ -1,6 +1,6 @@
-class h extends HTMLElement {
-  constructor(e, t, i = !1) {
-    super(), this.client = e, this._config = t || {}, this.isLogin = i;
+class l extends HTMLElement {
+  constructor(e, t, r = !1) {
+    super(), this.client = e, this._config = t || {}, this.isLogin = r;
   }
   set config(e) {
     this._config = e || {}, this.render();
@@ -21,7 +21,7 @@ class h extends HTMLElement {
 
         .sdk-input {
           width: 100%;
-          padding: 0.5rem 1rem;
+          padding: 0.5rem .9rem;
           border: 1px solid #e5e7eb;
           border-radius: 0.5rem;
           background-color: #ffffff;
@@ -114,6 +114,12 @@ class h extends HTMLElement {
         .sdk-header img {
           margin: 5px auto;
         }
+
+        .sdk-password-label{
+           display: flex;
+           justify-content: space-between;
+        }
+      
       </style>
     `;
   }
@@ -130,84 +136,82 @@ class h extends HTMLElement {
     const { assets: e = {} } = this._config;
     return `
       <div class="sdk-header">
-        ${e != null && e.logoImageUrl ? `<a href="${(e == null ? void 0 : e.logoLinkUrl) || "#"}"><img src="${e == null ? void 0 : e.logoImageUrl}" height="40"/></a>` : '<i class="ri-bluesky-fill text-4xl"></i>'}
-        <h1>${(e == null ? void 0 : e.title) || ""}</h1>
-        <p>${(e == null ? void 0 : e.subtitle) || ""}</p>
+        ${e?.logoImageUrl ? `<a href="${e?.logoLinkUrl || "#"}"><img src="${e?.logoImageUrl}" height="40"/></a>` : ""}
+        <h1>${e?.title || ""}</h1>
+        <p>${e?.subtitle || ""}</p>
       </div>
     `;
   }
   renderOAuthButtons(e, t) {
-    const i = this._config.providers || [];
+    const r = this._config.providers || [];
     return `
       <div class="sdk-oauth ${e == "blockButton" ? "sdk-oauth-block" : ""}">
-        ${i.map(
-      (r) => `<button class="sdk-oauth-btn ${t.providersButton || ""}" data-provider="${r}">
-            <i class="ri-${r.toLowerCase()}-fill"></i> ${e === "iconButton" ? r : `Continue with ${r}`}
+        ${r.map(
+      (s) => `<button class="sdk-oauth-btn ${t.providersButton || ""}" data-provider="${s}">
+            <i class="ri-${s.toLowerCase()}-fill"></i> ${e === "iconButton" ? s : `Continue with ${s}`}
           </button>`
     ).join("")}
       </div>
     `;
   }
-  renderDivider(e = "or continue with") {
-    return `
+  renderDivider(e) {
+    return !e || e?.length == 0 ? "" : `
      <div class="sdk-divider">
-      <span></span>  <span>${e}</span> <span></span>
+      <span></span>  <span>or continue with</span> <span></span>
      </div>
     `;
   }
   renderAuthForm(e) {
-    const { elements: t = {}, layout: i = {} } = this._config, r = i.socialButtonsPlacement || "bottom", s = i.socialButtonsVariant || "blockButton";
+    const { elements: t = {}, layout: r = {}, assets: s = {} } = this._config, i = r.socialButtonsPlacement || "bottom", o = r.socialButtonsVariant || "blockButton", a = this._config.providers || [];
     return `
-     ${r === "top" ? `${this.renderOAuthButtons(s, t)} ${this.renderDivider()}` : ""}
+     ${i === "top" ? `${this.renderOAuthButtons(o, t)} ${this.renderDivider(a)}` : ""}
       <form id="sdk-form" class="sdk-form">
          ${e == "up" ? `
           <div>
-            <label>Full name</label>
-            <input class="sdk-input ${t.formInputs || ""}" type="text" name="name" placeholder="Jackie Robinson" required />
+            <label for="sdk-form-name">Full name</label>
+            <input id="sdk-form-name" class="sdk-input ${t.formInputs || ""}" type="text" name="name" autocomplete="given-name" placeholder="Jackie Robinson" required />
           </div>
           ` : ""}
         <div>
-          <label>Email address</label>
-          <input class="sdk-input ${t.formInputs || ""}" type="email" name="email" placeholder="name@company.com" required />
+          <label for="sdk-form-email">Email address</label>
+          <input id="sdk-form-email" class="sdk-input ${t.formInputs || ""}" type="email" name="email" autocomplete="off" placeholder="email@address.com" required />
         </div>
         <div>
-          <label>Password</label>
-          <input class="sdk-input ${t.formInputs || ""}" type="password" name="password" placeholder="Min 6 characters, make it strong" required />
+          <label for="sdk-form-password">Password</label>
+          <input id="sdk-form-password" class="sdk-input ${t.formInputs || ""}" type="password" name="password" placeholder="Enter your password" required />
           <div class="sdk-error"></div>
         </div>
 
         <button class="sdk-button ${t.formButtonPrimary || ""}" type="submit">Sign ${e}</button>
       </form>
-      ${r === "bottom" ? `${this.renderDivider()} ${this.renderOAuthButtons(s, t)}` : ""}
+      ${i === "bottom" ? `${this.renderDivider(a)} ${this.renderOAuthButtons(o, t)}` : ""}
      `;
   }
   attachListeners() {
     const e = this.querySelector("#sdk-form"), t = this.querySelector(".sdk-error");
-    e.addEventListener("submit", async (r) => {
-      var d, l, c, u;
-      r.preventDefault();
-      const s = ((d = this.querySelector('input[name="email"]')) == null ? void 0 : d.value) || "", o = ((l = this.querySelector('input[name="password"]')) == null ? void 0 : l.value) || "", p = ((c = this.querySelector('input[name="name"]')) == null ? void 0 : c.value) || "", { error: a, data: b } = this.isLogin ? await this.client.auth.signInWithPassword({ email: s, password: o }) : await this.client.auth.signUp({
-        email: s,
+    e.addEventListener("submit", async (s) => {
+      s.preventDefault();
+      const i = this.querySelector('input[name="email"]')?.value || "", o = this.querySelector('input[name="password"]')?.value || "", a = this.querySelector('input[name="name"]')?.value || "", { error: d, data: h } = this.isLogin ? await this.client.auth.signInWithPassword({ email: i, password: o }) : await this.client.auth.signUp({
+        email: i,
         password: o,
-        options: { data: { display_name: p } }
+        options: { data: { display_name: a } }
       });
-      if (a)
-        return t.innerHTML = `<i class="ri-error-warning-line"></i> ${a.message || "Invalid credentials"}`;
-      const m = ((u = this._config.assets) == null ? void 0 : u.redirectUrl) || "/";
-      window.location.href = m;
+      if (d)
+        return t.innerHTML = `<i class="ri-error-warning-line"></i> ${d.message || "Invalid credentials"}`;
+      const c = this._config.assets?.redirectUrl || "/";
+      window.location.href = c;
     }), Array.from(this.querySelectorAll(".sdk-oauth button")).forEach(
-      (r) => r.addEventListener("click", async () => {
-        var o;
-        const s = r.dataset.provider.toLowerCase();
+      (s) => s.addEventListener("click", async () => {
+        const i = s.dataset.provider.toLowerCase();
         await this.client.auth.signInWithOAuth({
-          provider: s,
-          options: { redirectTo: ((o = this._config.assets) == null ? void 0 : o.redirectUrl) || "/" }
+          provider: i,
+          options: { redirectTo: this._config.assets?.redirectUrl || "/" }
         });
       })
     );
   }
 }
-class f extends h {
+class u extends l {
   constructor(e, t) {
     super(e, t, !0);
   }
@@ -219,7 +223,7 @@ class f extends h {
     `;
   }
 }
-class g extends h {
+class p extends l {
   constructor(e, t) {
     super(e, t, !1);
   }
@@ -231,18 +235,18 @@ class g extends h {
     `;
   }
 }
-function k(n) {
-  return customElements.get("supabase-signin") || customElements.define("supabase-signin", class extends f {
+function m(n) {
+  return customElements.get("supabase-signin") || customElements.define("supabase-signin", class extends u {
     constructor() {
       super(n);
     }
-  }), customElements.get("supabase-signup") || customElements.define("supabase-signup", class extends g {
+  }), customElements.get("supabase-signup") || customElements.define("supabase-signup", class extends p {
     constructor() {
       super(n);
     }
   }), { SignIn: "supabase-signin", SignUp: "supabase-signup" };
 }
 export {
-  k as createAuthComponents
+  m as createAuthComponents
 };
 //# sourceMappingURL=Auth.js.map

@@ -23,36 +23,49 @@ const supabase = createClient('https://xyzcompany.supabase.co', 'publishable-or-
 
 
 ## 2. Install Rechaff
-Install Rechaff via npm:
+You can use Rechaff in two ways: via npm (recommended) or via a CDN import.
 
+### Option A — Install via npm
 ```bash
 npm install rechaff
 ```
 
-Then import and initialize it by passing your Supabase client instance:
 
 ```js
 import { createAuthComponents } from 'rechaff';
 
-// Initialize the sign-in and sign-up components with your Supabase client
+// Initialize auth components
 const { SignIn, SignUp } = createAuthComponents(supabase);
 ```
 
+<br>
+
+### Option B — Import directly from CDN
+```js
+import { createAuthComponents } from "https://cdn.jsdelivr.net/gh/LaB-CH3/rechaff@v1.0.0/dist/Auth.js";
+
+// Initialize auth components
+const { SignIn, SignUp } = createAuthComponents(supabase);
+```
 
 <br><br>
-
-
-
 
 ## 3. Using the Components
 
 Sign-up and sign-in components share the same configuration options. You can optionally provide your own CSS classes—whether custom or TailwindCSS.
 ReChaff also supports Remix Icons, so if you already have it in your project, Rechaff will automatically apply the icons where needed—no additional setup is required.
 
-<br><br>
+<br>
+
+#### A quick example
+
+```html
+ <SignUp :config="{ assets:{ redirectUrl: 'https://your-app.com/dashboard' } }" />
+
+```
 
 
-#### Sign Up Example
+#### Full SignUp example
 
 ```html
   <sign-up
@@ -79,7 +92,7 @@ ReChaff also supports Remix Icons, so if you already have it in your project, Re
 ```
 
 
-#### Sign In Example
+#### Full SignIn example
 
 ```html
   <sign-in
