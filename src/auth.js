@@ -178,6 +178,7 @@ class BaseAuth extends HTMLElement {
   }
 
 
+  
   renderAuthForm(authType){
      const { elements = {}, layout = {}, assets = {} } = this._config;
      const socialPlacement = layout.socialButtonsPlacement || "bottom";
