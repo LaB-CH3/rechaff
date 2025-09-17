@@ -129,8 +129,6 @@ const config = {
 ### Use in React
 
 ```js
-
-import React from "react";
 import { createClient } from "@supabase/supabase-js";
 import { createAuthComponents } from "rechaff";
 
@@ -142,23 +140,22 @@ const { SignIn, SignUp } = createAuthComponents(supabase);
 
 // Configuration object
 const config = {
-   providers: ["Google", "Discord"],
-   assets: { 
-        title: "Create Account", 
-        subtitle: 'Start your 30-day free trial. Cancel anytime', 
-        redirectUrl: "/dashboard" 
-    }
+  providers: ["Google", "Discord"],
+  assets: {
+    title: "Create Account",
+    subtitle: "Start your 30-day free trial. Cancel anytime",
+    redirectUrl: "/dashboard",
+  },
 };
 
-export default function App() {
+export default function AuthPage() {
   return (
-    <div className="App">
-      <supabase-signup config={JSON.stringify(config)} />
-      <supabase-signin config={JSON.stringify(config)} />
+    <div>
+      <SignUp config={config} />
+      <SignIn config={config} />
     </div>
   );
 }
-
 
 ```
 
